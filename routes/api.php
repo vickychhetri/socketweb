@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\authcontroller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::post('/login', [authController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('/chat-message', function (Request $request) {
+        Log::info($request->all());
+        event(new \App\Events\ChatMessageEvent((string)$request->message,$request->user_id));
+        return response()->json([
+            'success'=>true
+        ],200);
+    });
+
+
 });
+
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});

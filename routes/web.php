@@ -26,10 +26,7 @@ Route::get('/playground', function () {
 });
 
 Route::get('/ws', function () {
-   return view('index');
-});
-Route::get('/chat-message', function (Request $request) {
-     Log::info($request->all());
-    event(new \App\Events\ChatMessageEvent((string)$request->message));
-    return null;
+    $user_id=1;
+    $type="user";
+   return view('index',compact('user_id','type'));
 });
